@@ -1,0 +1,190 @@
+<view class="container">
+  <view class="lantern lantern-left"></view>
+  <view class="lantern lantern-right"></view>
+
+  <view class="game-container">
+    <view class="header">
+      <text class="title">🧧 新春厨神争霸赛 🧧</text>
+      <text class="subtitle">年夜饭挑战 - 看看谁是真正的厨神！</text>
+    </view>
+
+    <view class="menu-screen" wx:if="{{currentScreen === 'menu'}}">
+      <view class="menu-options">
+        <view class="menu-card" bindtap="selectGame" data-game="dumpling">
+          <text class="emoji">🥟</text>
+          <text class="card-title">包饺子挑战</text>
+          <text class="card-desc">拖拽食材到锅中，包出最多的饺子！</text>
+        </view>
+        <view class="menu-card" bindtap="selectGame" data-game="tangyuan">
+          <text class="emoji">🍡</text>
+          <text class="card-title">搓汤圆挑战</text>
+          <text class="card-desc">拖拽食材到锅中，搓出最多的汤圆！</text>
+        </view>
+        <view class="menu-card" bindtap="goToImageProcessor">
+          <text class="emoji">🖼️</text>
+          <text class="card-title">图片处理工具</text>
+          <text class="card-desc">压缩、裁剪、去水印功能！</text>
+        </view>
+      </view>
+
+      <view class="difficulty-selector">
+        <text class="selector-title">选择难度</text>
+        <view class="difficulty-buttons">
+          <view class="difficulty-btn {{difficulty === 'easy' ? 'active' : ''}}" bindtap="setDifficulty" data-level="easy">简单</view>
+          <view class="difficulty-btn {{difficulty === 'normal' ? 'active' : ''}}" bindtap="setDifficulty" data-level="normal">普通</view>
+          <view class="difficulty-btn {{difficulty === 'hard' ? 'active' : ''}}" bindtap="setDifficulty" data-level="hard">困难</view>
+        </view>
+      </view>
+
+      <view class="multiplayer-section">
+        <text class="section-title">🎮 多人对战模式</text>
+        <input class="room-input" placeholder="输入房间号（如：8888）" maxlength="4" value="{{roomId}}" bindinput="onRoomInput"/>
+        <view class="room-buttons">
+          <view class="room-btn create-room-btn" bindtap="createRoom">创建房间</view>
+          <view class="room-btn join-room-btn" bindtap="joinRoom">加入房间</view>
+        </view>
+      </view>
+
+      <view class="leaderboard" wx:if="{{showLeaderboard}}">
+        <text class="section-title">🏆 实时排行榜</text>
+        <view class="leaderboard-list">
+          <view class="leaderboard-item" wx:for="{{leaderboard}}" wx:key="index">
+            <text>{{index + 1}}. {{item.name}}</text>
+            <text>{{item.score}}分</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="game-screen" wx:if="{{currentScreen === 'game'}}">
+      <view class="game-info">
+        <view class="timer {{timeLeft <= 10 ? 'warning' : ''}}">⏱️ {{timeLeft}}秒</view>
+        <view class="score">🏆 得分: {{score}}</view>
+      </view>
+
+      <view class="cooking-area">
+        <view class="cooking-station">
+          <view class="ingredient" wx:for="{{ingredients}}" wx:key="index" 
+                bindtouchstart="handleTouchStart" bindtouchmove="handleTouchMove" bindtouchend="handleTouchEnd"
+                data-index="{{index}}">
+            <text class="emoji">{{item.emoji}}</text>
+            <text class="name">{{item.name}}</text>
+            <text class="count">{{item.count}}</text>
+          </view>
+        </view>
+
+        <view class="cooking-pot {{isCooking ? 'cooking' : ''}}" id="cooking-pot">
+          <text class="steam">💨</text>
+          <text id="pot-content">{{potContent}}</text>
+        </view>
+
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{progress}}%">
+            {{progress}}%
+          </view>
+        </view>
+      </view>
+
+      <view class="message-box">
+        {{message}}
+      </view>
+
+      <view class="action-buttons">
+        <view class="action-btn cook-btn" bindtap="cook" disabled="{{isCooking}}">
+          <text>🔥</text> 开始烹饪
+        </view>
+        <view class="action-btn reset-btn" bindtap="resetGame">
+          <text>🔄</text> 重新开始
+        </view>
+        <view class="action-btn back-btn" bindtap="backToMenu">
+          <text>🏠</text> 返回菜单
+        </view>
+      </view>
+    </view>
+
+    <view class="result-screen" wx:if="{{currentScreen === 'result'}}">
+      <view class="result-content">
+        <text class="result-emoji">{{resultEmoji}}</text>
+        <text class="result-title">{{resultTitle}}</text>
+
+        <view class="result-stats">
+          <view class="stat-item">
+            <text class="stat-label">制作数量</text>
+            <text class="stat-value">{{resultCount}}</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">最终得分</text>
+            <text class="stat-value">{{resultScore}}</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">用时</text>
+            <text class="stat-value">{{resultTime}}秒</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">厨神等级</text>
+            <text class="stat-value">{{resultLevel}}</text>
+          </view>
+        </view>
+
+        <view class="funny-comment">
+          {{funnyComment}}
+        </view>
+
+        <view class="share-buttons">
+          <view class="share-btn share-wechat" bindtap="share" data-platform="wechat">
+            <text>💬</text> 分享到微信
+          </view>
+          <view class="share-btn share-copy" bindtap="share" data-platform="copy">
+            <text>📋</text> 复制成绩
+          </view>
+        </view>
+
+        <view class="action-buttons">
+          <view class="action-btn cook-btn" bindtap="playAgain">
+            <text>🎮</text> 再玩一次
+          </view>
+          <view class="action-btn back-btn" bindtap="backToMenu">
+            <text>🏠</text> 返回菜单
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="easter-egg {{showEasterEgg ? 'show' : ''}}">
+    {{easterEggText}}
+  </view>
+
+  <view class="welcome-modal" wx:if="{{showWelcomeModal}}">
+    <view class="modal-content">
+      <text class="modal-title">🧧 新春年夜饭大作战 🧧</text>
+      <text class="modal-text">
+        叮咚！《春节年夜饭大作战》正式开席啦！
+        
+        专为春节家庭聚会打造，不用安装，打开就能玩！
+        PC、手机、平板全适配，支持全家跨设备组队！
+        
+        现在就进入游戏，看看谁是真正的厨神！
+      </text>
+      <view class="modal-btn" bindtap="closeWelcomeModal">开始游戏</view>
+    </view>
+  </view>
+
+  <view class="tutorial-modal" wx:if="{{showTutorialModal}}">
+    <view class="modal-content">
+      <text class="modal-title">👴 长辈友好指南</text>
+      <text class="modal-text">
+        叔叔阿姨别紧张！
+        
+        就像家里包饺子一样，拖过来放锅里就行！
+        咱们不比速度，开心最重要！
+        
+        💡 小提示：
+        • 用手指拖拽食材到锅中
+        • 点击"开始烹饪"按钮
+        • 看着分数涨起来就好啦！
+      </text>
+      <view class="modal-btn" bindtap="closeTutorialModal">我明白了</view>
+    </view>
+  </view>
+</view>
