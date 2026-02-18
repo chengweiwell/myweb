@@ -117,29 +117,45 @@
         .category-nav {
             background: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 20px 0;
         }
 
         .category-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-            display: flex;
-            gap: 30px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
         }
 
         .category-item {
-            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             cursor: pointer;
-            color: #666;
-            font-size: 14px;
-            border-bottom: 2px solid transparent;
+            padding: 15px 10px;
+            border-radius: 10px;
             transition: all 0.3s;
+            background: #f8f9fa;
         }
 
         .category-item:hover,
         .category-item.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 500;
         }
 
         /* 轮播图 */
@@ -284,8 +300,13 @@
             margin-bottom: 10px;
         }
 
+        .product-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
         .add-to-cart {
-            width: 100%;
+            flex: 1;
             padding: 10px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -297,6 +318,22 @@
         }
 
         .add-to-cart:hover {
+            opacity: 0.9;
+        }
+
+        .buy-now {
+            flex: 1;
+            padding: 10px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .buy-now:hover {
             opacity: 0.9;
         }
 
@@ -429,6 +466,259 @@
             opacity: 0.9;
         }
 
+        /* 支付弹窗 */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-modal.show {
+            display: flex;
+        }
+
+        .payment-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .payment-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .payment-header h3 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .close-payment {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+        }
+
+        .payment-body {
+            padding: 20px;
+        }
+
+        .payment-product {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-product-image {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .payment-product-info {
+            flex: 1;
+        }
+
+        .payment-product-name {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .payment-product-price {
+            color: #ff6b6b;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .payment-quantity {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .payment-quantity label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .payment-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        .payment-quantity-value {
+            font-size: 16px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .payment-methods {
+            margin-bottom: 20px;
+        }
+
+        .payment-methods-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .payment-methods-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #667eea;
+        }
+
+        .payment-method.selected {
+            border-color: #667eea;
+            background: #f0f3ff;
+        }
+
+        .payment-method-icon {
+            font-size: 30px;
+        }
+
+        .payment-method-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .payment-method-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-method.selected .payment-method-radio {
+            border-color: #667eea;
+        }
+
+        .payment-method.selected .payment-method-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .payment-summary {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .payment-summary-row.total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .payment-summary-row.total span:last-child {
+            color: #ff6b6b;
+        }
+
+        .payment-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .payment-submit:hover {
+            opacity: 0.9;
+        }
+
         /* 遮罩层 */
         .overlay {
             position: fixed;
@@ -519,7 +809,7 @@
             border-radius: 5px;
             opacity: 0;
             transition: all 0.3s;
-            z-index: 3000;
+            z-index: 4000;
         }
 
         .toast.show {
@@ -559,6 +849,14 @@
             .footer-container {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .category-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .payment-content {
+                width: 95%;
+            }
         }
     </style>
 </head>
@@ -586,12 +884,30 @@
     <!-- 分类导航 -->
     <nav class="category-nav">
         <div class="category-container">
-            <div class="category-item active" onclick="filterProducts('all')">全部商品</div>
-            <div class="category-item" onclick="filterProducts('electronics')">数码电子</div>
-            <div class="category-item" onclick="filterProducts('clothing')">服装鞋包</div>
-            <div class="category-item" onclick="filterProducts('home')">家居生活</div>
-            <div class="category-item" onclick="filterProducts('food')">美食零食</div>
-            <div class="category-item" onclick="filterProducts('beauty')">美妆护肤</div>
+            <div class="category-item active" onclick="filterProducts('all')">
+                <div class="category-icon">🏪</div>
+                <div class="category-name">全部商品</div>
+            </div>
+            <div class="category-item" onclick="filterProducts('electronics')">
+                <div class="category-icon">📱</div>
+                <div class="category-name">数码电子</div>
+            </div>
+            <div class="category-item" onclick="filterProducts('clothing')">
+                <div class="category-icon">👔</div>
+                <div class="category-name">服装鞋包</div>
+            </div>
+            <div class="category-item" onclick="filterProducts('home')">
+                <div class="category-icon">🏠</div>
+                <div class="category-name">家居生活</div>
+            </div>
+            <div class="category-item" onclick="filterProducts('food')">
+                <div class="category-icon">🍰</div>
+                <div class="category-name">美食零食</div>
+            </div>
+            <div class="category-item" onclick="filterProducts('beauty')">
+                <div class="category-icon">💄</div>
+                <div class="category-name">美妆护肤</div>
+            </div>
         </div>
     </nav>
 
@@ -650,6 +966,64 @@
                 <span class="cart-total-price" id="cartTotal">¥0.00</span>
             </div>
             <button class="checkout-btn" onclick="checkout()">去结算</button>
+        </div>
+    </div>
+
+    <!-- 支付弹窗 -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <div class="payment-header">
+                <h3>确认订单</h3>
+                <button class="close-payment" onclick="closePaymentModal()">×</button>
+            </div>
+            <div class="payment-body">
+                <div class="payment-product" id="paymentProduct">
+                    <!-- 商品信息将通过JavaScript动态生成 -->
+                </div>
+                <div class="payment-quantity">
+                    <label>购买数量：</label>
+                    <div class="payment-quantity-controls">
+                        <button class="payment-quantity-btn" onclick="changePaymentQuantity(-1)">-</button>
+                        <span class="payment-quantity-value" id="paymentQuantity">1</span>
+                        <button class="payment-quantity-btn" onclick="changePaymentQuantity(1)">+</button>
+                    </div>
+                </div>
+                <div class="payment-methods">
+                    <div class="payment-methods-title">选择支付方式</div>
+                    <div class="payment-methods-list">
+                        <div class="payment-method selected" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">💚</div>
+                            <div class="payment-method-name">微信支付</div>
+                            <div class="payment-method-radio"></div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">💙</div>
+                            <div class="payment-method-name">支付宝</div>
+                            <div class="payment-method-radio"></div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">💳</div>
+                            <div class="payment-method-name">银行卡支付</div>
+                            <div class="payment-method-radio"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-summary">
+                    <div class="payment-summary-row">
+                        <span>商品金额</span>
+                        <span id="paymentSubtotal">¥0.00</span>
+                    </div>
+                    <div class="payment-summary-row">
+                        <span>运费</span>
+                        <span>¥0.00</span>
+                    </div>
+                    <div class="payment-summary-row total">
+                        <span>应付金额</span>
+                        <span id="paymentTotal">¥0.00</span>
+                    </div>
+                </div>
+                <button class="payment-submit" onclick="submitPayment()">立即支付</button>
+            </div>
         </div>
     </div>
 
@@ -728,6 +1102,8 @@
         // 购物车数据
         let cart = [];
         let currentSlide = 0;
+        let currentPaymentProduct = null;
+        let paymentQuantity = 1;
 
         // 初始化页面
         function init() {
@@ -745,7 +1121,10 @@
                         <div class="product-name">${product.name}</div>
                         <div class="product-price"><span>¥</span>${product.price.toFixed(2)}</div>
                         <div class="product-sales">已售 ${product.sales} 件</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">加入购物车</button>
+                        <div class="product-buttons">
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">加入购物车</button>
+                            <button class="buy-now" onclick="event.stopPropagation(); buyNow(${product.id})">立即购买</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -769,7 +1148,7 @@
             document.querySelectorAll('.category-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
 
             // 筛选商品
             if (category === 'all') {
@@ -799,6 +1178,71 @@
 
             updateCartUI();
             showToast('已加入购物车');
+        }
+
+        // 立即购买
+        function buyNow(productId) {
+            const product = products.find(p => p.id === productId);
+            currentPaymentProduct = product;
+            paymentQuantity = 1;
+            openPaymentModal();
+        }
+
+        // 打开支付弹窗
+        function openPaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            const productDiv = document.getElementById('paymentProduct');
+            
+            productDiv.innerHTML = `
+                <div class="payment-product-image">${currentPaymentProduct.icon}</div>
+                <div class="payment-product-info">
+                    <div class="payment-product-name">${currentPaymentProduct.name}</div>
+                    <div class="payment-product-price">¥${currentPaymentProduct.price.toFixed(2)}</div>
+                </div>
+            `;
+            
+            updatePaymentSummary();
+            modal.classList.add('show');
+        }
+
+        // 关闭支付弹窗
+        function closePaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            modal.classList.remove('show');
+        }
+
+        // 修改支付数量
+        function changePaymentQuantity(delta) {
+            paymentQuantity += delta;
+            if (paymentQuantity < 1) paymentQuantity = 1;
+            if (paymentQuantity > 99) paymentQuantity = 99;
+            
+            document.getElementById('paymentQuantity').textContent = paymentQuantity;
+            updatePaymentSummary();
+        }
+
+        // 更新支付摘要
+        function updatePaymentSummary() {
+            const subtotal = currentPaymentProduct.price * paymentQuantity;
+            document.getElementById('paymentSubtotal').textContent = `¥${subtotal.toFixed(2)}`;
+            document.getElementById('paymentTotal').textContent = `¥${subtotal.toFixed(2)}`;
+        }
+
+        // 选择支付方式
+        function selectPaymentMethod(element) {
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // 提交支付
+        function submitPayment() {
+            const total = currentPaymentProduct.price * paymentQuantity;
+            const paymentMethod = document.querySelector('.payment-method.selected .payment-method-name').textContent;
+            
+            showToast(`支付成功！使用${paymentMethod}支付¥${total.toFixed(2)}`);
+            closePaymentModal();
         }
 
         // 更新购物车UI
